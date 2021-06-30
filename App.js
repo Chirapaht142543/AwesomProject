@@ -5,141 +5,110 @@
  * @format
  * @flow strict-local
  */
-
- import { Input } from 'react-native-elements'
- import React from 'react';
- import type {Node} from 'react';
+ import React, { useState } from "react";
+ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
  
- import { Button } from 'react-native-elements';
- import Icon from 'react-native-vector-icons/FontAwesome';
+ const FlexDirectionBasics = () => {
+   const [flexDirection, setflexDirection] = useState("column");
  
- import { ActivityIndicator } from 'react-native';
- import { Image } from 'react-native-elements';
-
- import firestore from "@react-native-firebase/firestore";
- 
- import {
-   SafeAreaView,
-   ScrollView,
-   StatusBar,
-   StyleSheet,
-   Text,
-   TextInput,
-   useColorScheme,
-   View,
- } from 'react-native';
- 
- import {
-   Colors,
-   DebugInstructions,
-   Header,
-   LearnMoreLinks,
-   ReloadInstructions,
- } from 'react-native/Libraries/NewAppScreen';
- 
- const Section = ({children, title}): Node => {
-   const isDarkMode = useColorScheme() === 'dark';
    return (
-     <View style={styles.sectionContainer}>
-       <Text
-         style={[
-           styles.sectionTitle,
-           {
-             color: isDarkMode ? Colors.white : Colors.black,
-           },
-         ]}>
-         {title}
-       </Text>
-       <Text
-         style={[
-           styles.sectionDescription,
-           {
-             color: isDarkMode ? Colors.light : Colors.dark,
-           },
-         ]}>
-         {children}
-       </Text>
+     <PreviewLayout
+       label="flexDirection"
+       values={["column", "row", "row-reverse", "column-reverse"]}
+       selectedValue={flexDirection}
+       setSelectedValue={setflexDirection}
+     >
+       <View
+         style={[styles.box, { backgroundColor: "powderblue" }]}
+       />
+       <View
+         style={[styles.box, { backgroundColor: "skyblue" }]}
+       />
+       <View
+         style={[styles.box, { backgroundColor: "steelblue" }]}
+       />
+     </PreviewLayout>
+   );
+ };
+ 
+ const PreviewLayout = ({
+   label,
+   children,
+   values,
+   selectedValue,
+   setSelectedValue,
+ }) => (
+   <View style={{ padding: 10, flex: 1 }}>
+     <Text style={styles.label}>{label}</Text>
+     <View style={styles.row}>
+       {values.map((value) => (
+         <TouchableOpacity
+           key={value}
+           onPress={() => setSelectedValue(value)}
+           style={[
+             styles.button,
+             selectedValue === value && styles.selected,
+           ]}
+         >
+           <Text
+             style={[
+               styles.buttonLabel,
+               selectedValue === value && styles.selectedLabel,
+             ]}
+           >
+             {value}
+           </Text>
+         </TouchableOpacity>
+       ))}
      </View>
-   );
- };
- 
- const App: () => Node = () => {
-   const isDarkMode = useColorScheme() === 'dark';
- 
-   const backgroundStyle = {
-     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-   };
-
-   const App: () => Node = () => {
-     firestore().collection('Users').doc('ABC').get().then((user) => {
-       console.log(user)
-     });
-   };
- 
-   return (
-     <SafeAreaView style={backgroundStyle} >
-       <Text style={{fontSize:50}}>Lucky</Text>
-       <Input placeholder="Hint"></Input>
-       <TextInput style={{backgroundColor:"#DDDDDD"}} keyboardType="default"></TextInput>
-  
-       <Button
-         icon={
-           <Icon
-           name="arrow-right"
-           size={15}
-           color="white"
-         />
-       }
-       title=" Button with icon component"
-     />
-      <ScrollView style={styles.ScrollView}> 
-        <Image
-          source={{ uri: 'https://scontent.fbkk12-1.fna.fbcdn.net/v/t1.6435-9/35302363_1954116074899525_9190251246227816448_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeGiJWCCA-0Bo9uAds8D5P02MMn52_9j9xowyfnb_2P3Gorj7vW3rnaNYAWvPELPQGqeq4XzByTDN-8kLhX8QGht&_nc_ohc=62Otf5k8AQQAX-s5p-r&_nc_oc=AQmyHT6Ev5XwYCtFdaMaioQE-V3LgZljvX_67P__xTX4TGG0ORLrXLz04eQ2mtdr45w&_nc_ht=scontent.fbkk12-1.fna&oh=3076a314f77c8bdfec9f129514119115&oe=60D80EC5 '}}
-          style={{ width: 200, height: 200 , marginLeft: 100 , marginTop: 50}}
-          PlaceholderContent={<ActivityIndicator />}
-        />
-        <Image
-          source={{ uri: 'https://scontent.fbkk12-1.fna.fbcdn.net/v/t1.6435-9/35302363_1954116074899525_9190251246227816448_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeGiJWCCA-0Bo9uAds8D5P02MMn52_9j9xowyfnb_2P3Gorj7vW3rnaNYAWvPELPQGqeq4XzByTDN-8kLhX8QGht&_nc_ohc=62Otf5k8AQQAX-s5p-r&_nc_oc=AQmyHT6Ev5XwYCtFdaMaioQE-V3LgZljvX_67P__xTX4TGG0ORLrXLz04eQ2mtdr45w&_nc_ht=scontent.fbkk12-1.fna&oh=3076a314f77c8bdfec9f129514119115&oe=60D80EC5 '}}
-          style={{ width: 200, height: 200 , marginLeft: 100 , marginTop: 50}}
-          PlaceholderContent={<ActivityIndicator />}
-        />
-        <Image
-          source={{ uri: 'https://scontent.fbkk12-1.fna.fbcdn.net/v/t1.6435-9/35302363_1954116074899525_9190251246227816448_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeGiJWCCA-0Bo9uAds8D5P02MMn52_9j9xowyfnb_2P3Gorj7vW3rnaNYAWvPELPQGqeq4XzByTDN-8kLhX8QGht&_nc_ohc=62Otf5k8AQQAX-s5p-r&_nc_oc=AQmyHT6Ev5XwYCtFdaMaioQE-V3LgZljvX_67P__xTX4TGG0ORLrXLz04eQ2mtdr45w&_nc_ht=scontent.fbkk12-1.fna&oh=3076a314f77c8bdfec9f129514119115&oe=60D80EC5 '}}
-          style={{ width: 200, height: 200 , marginLeft: 100 , marginTop: 50}}
-          PlaceholderContent={<ActivityIndicator />}
-        />
-        <Image
-          source={{ uri: 'https://scontent.fbkk12-1.fna.fbcdn.net/v/t1.6435-9/35302363_1954116074899525_9190251246227816448_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeGiJWCCA-0Bo9uAds8D5P02MMn52_9j9xowyfnb_2P3Gorj7vW3rnaNYAWvPELPQGqeq4XzByTDN-8kLhX8QGht&_nc_ohc=62Otf5k8AQQAX-s5p-r&_nc_oc=AQmyHT6Ev5XwYCtFdaMaioQE-V3LgZljvX_67P__xTX4TGG0ORLrXLz04eQ2mtdr45w&_nc_ht=scontent.fbkk12-1.fna&oh=3076a314f77c8bdfec9f129514119115&oe=60D80EC5 '}}
-          style={{ width: 200, height: 200 , marginLeft: 100 , marginTop: 50}}
-          PlaceholderContent={<ActivityIndicator />}
-        />
-        <Image
-          source={{ uri: 'https://scontent.fbkk12-1.fna.fbcdn.net/v/t1.6435-9/35302363_1954116074899525_9190251246227816448_n.jpg?_nc_cat=101&ccb=1-3&_nc_sid=09cbfe&_nc_eui2=AeGiJWCCA-0Bo9uAds8D5P02MMn52_9j9xowyfnb_2P3Gorj7vW3rnaNYAWvPELPQGqeq4XzByTDN-8kLhX8QGht&_nc_ohc=62Otf5k8AQQAX-s5p-r&_nc_oc=AQmyHT6Ev5XwYCtFdaMaioQE-V3LgZljvX_67P__xTX4TGG0ORLrXLz04eQ2mtdr45w&_nc_ht=scontent.fbkk12-1.fna&oh=3076a314f77c8bdfec9f129514119115&oe=60D80EC5 '}}
-          style={{ width: 200, height: 200 , marginLeft: 100 , marginTop: 50}}
-          PlaceholderContent={<ActivityIndicator />}
-        />
-      </ScrollView>
-     </SafeAreaView>
-   );
- };
+     <View style={[styles.container, { [label]: selectedValue }]}>
+       {children}
+     </View>
+   </View>
+ );
  
  const styles = StyleSheet.create({
-   sectionContainer: {
-     marginTop: 32,
-     paddingHorizontal: 24,
-   },
-   sectionTitle: {
-     fontSize: 24,
-     fontWeight: '600',
-   },
-   sectionDescription: {
+   container: {
+     flex: 1,
      marginTop: 8,
-     fontSize: 18,
-     fontWeight: '400',
+     backgroundColor: "aliceblue",
    },
-   highlight: {
-     fontWeight: '700',
+   box: {
+     width: 50,
+     height: 50,
+   },
+   row: {
+     flexDirection: "row",
+     flexWrap: "wrap",
+   },
+   button: {
+     paddingHorizontal: 8,
+     paddingVertical: 6,
+     borderRadius: 4,
+     backgroundColor: "oldlace",
+     alignSelf: "flex-start",
+     marginHorizontal: "1%",
+     marginBottom: 6,
+     minWidth: "48%",
+     textAlign: "center",
+   },
+   selected: {
+     backgroundColor: "coral",
+     borderWidth: 0,
+   },
+   buttonLabel: {
+     fontSize: 12,
+     fontWeight: "500",
+     color: "coral",
+   },
+   selectedLabel: {
+     color: "white",
+   },
+   label: {
+     textAlign: "center",
+     marginBottom: 10,
+     fontSize: 24,
    },
  });
  
- export default App;
+ export default FlexDirectionBasics;
